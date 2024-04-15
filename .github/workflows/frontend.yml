@@ -30,7 +30,7 @@ permissions:
 
 jobs:
   run-e2e-tests-in-zeppelin-web:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -61,7 +61,7 @@ jobs:
         run: if [ -d "logs" ]; then cat logs/*; fi
 
   run-tests-in-zeppelin-web-angular:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -87,7 +87,7 @@ jobs:
         run: xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" ./mvnw package -pl zeppelin-web-angular -Pweb-angular ${MAVEN_ARGS}
 
   test-selenium-with-spark-module-for-spark-3-4:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     defaults:
       run:
         shell: bash -l {0}
