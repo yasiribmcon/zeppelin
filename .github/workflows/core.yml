@@ -80,6 +80,7 @@ jobs:
           auto-activate-base: false
           use-mamba: true
           architecture: s390x
+          miniconda-version: latest
       - name: Make IRkernel available to Jupyter
         run: |
           R -e "IRkernel::installspec()"
