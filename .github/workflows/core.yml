@@ -68,19 +68,6 @@ jobs:
         run: ./mvnw install -Pbuild-distr -DskipTests -pl zeppelin-server,zeppelin-web,spark-submit,spark/scala-2.12,spark/scala-2.13,markdown,angular,shell -am -Phelium-dev -Pexamples -P${{ matrix.hadoop }} ${MAVEN_ARGS}
       - name: install and test plugins
         run: ./mvnw package -pl zeppelin-plugins -amd ${MAVEN_ARGS}
-      - name: Setup conda environment with python 3.9 and R
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: python_3_with_R
-          environment-file: testing/env_python_3.9_with_R.yml
-          python-version: 3.9
-          miniforge-variant: Mambaforge
-          channels: conda-forge,defaults
-          channel-priority: true
-          auto-activate-base: false
-          use-mamba: true
-          architecture: s390x
-          miniconda-version: latest
       - name: Make IRkernel available to Jupyter
         run: |
           R -e "IRkernel::installspec()"
@@ -121,17 +108,6 @@ jobs:
             ${{ runner.os }}-zeppelin-
       - name: install environment
         run: ./mvnw install -DskipTests -am -pl ${INTERPRETERS} ${MAVEN_ARGS}
-      - name: Setup conda environment with python 3.9 and R
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: python_3_with_R_and_tensorflow
-          environment-file: testing/env_python_3_with_R_and_tensorflow.yml
-          python-version: 3.9
-          miniforge-variant: Mambaforge
-          channels: conda-forge,defaults
-          channel-priority: true
-          auto-activate-base: false
-          use-mamba: true
       - name: verify interpreter
         run: ./mvnw verify -am -pl ${INTERPRETERS} ${MAVEN_ARGS}
 
@@ -214,17 +190,6 @@ jobs:
         run: |
           ./mvnw install -DskipTests -Phadoop3 -Pintegration -pl zeppelin-interpreter-integration,zeppelin-web,spark-submit,spark/scala-2.12,spark/scala-2.13,markdown,flink-cmd,flink/flink-scala-2.12,jdbc,shell -am -Pflink-117 ${MAVEN_ARGS}
           ./mvnw package -pl zeppelin-plugins -amd -DskipTests ${MAVEN_ARGS}
-      - name: Setup conda environment with python 3.9 and R
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: python_3_with_R
-          environment-file: testing/env_python_3_with_R.yml
-          python-version: 3.9
-          miniforge-variant: Mambaforge
-          channels: conda-forge,defaults
-          channel-priority: true
-          auto-activate-base: false
-          use-mamba: true
       - name: Make IRkernel available to Jupyter
         run: |
           R -e "IRkernel::installspec()"
@@ -271,17 +236,6 @@ jobs:
         run: |
           ./mvnw install -DskipTests -am -pl flink/flink-scala-2.12,flink-cmd,zeppelin-interpreter-integration -Pflink-${{ matrix.flink }} -Phadoop3 -Pintegration ${MAVEN_ARGS}
           ./mvnw clean package -pl zeppelin-plugins -amd -DskipTests ${MAVEN_ARGS}
-      - name: Setup conda environment with python ${{ matrix.python }} and R
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: python_3_with_flink
-          environment-file: testing/env_python_3_with_flink_${{ matrix.flink }}.yml
-          python-version: ${{ matrix.python }}
-          miniforge-variant: Mambaforge
-          channels: conda-forge,defaults
-          channel-priority: true
-          auto-activate-base: false
-          use-mamba: true
       - name: run tests for flink
         run: ./mvnw verify -pl flink/flink-scala-2.12,flink-cmd,zeppelin-interpreter-integration -Pflink-${{ matrix.flink }} -am -Phadoop3 -Pintegration -DfailIfNoTests=false -Dtest=org.apache.zeppelin.flink.*Test,FlinkIntegrationTest${{ matrix.flink }} ${MAVEN_ARGS}
       - name: Print zeppelin logs
@@ -321,17 +275,6 @@ jobs:
         run: |
           ./mvnw install -DskipTests -pl zeppelin-interpreter-integration,zeppelin-web,spark-submit,spark/scala-2.12,spark/scala-2.13,markdown -am -Phadoop3 -Pintegration ${MAVEN_ARGS}
           ./mvnw clean package -pl zeppelin-plugins -amd -DskipTests ${MAVEN_ARGS}
-      - name: Setup conda environment with python 3.9 and R
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: python_3_with_R
-          environment-file: testing/env_python_3_with_R.yml
-          python-version: 3.9
-          miniforge-variant: Mambaforge
-          channels: conda-forge,defaults
-          channel-priority: true
-          auto-activate-base: false
-          use-mamba: true
       - name: Make IRkernel available to Jupyter
         run: |
           R -e "IRkernel::installspec()"
@@ -374,17 +317,6 @@ jobs:
             ${{ runner.os }}-zeppelin-
       - name: install environment
         run: ./mvnw install -DskipTests -pl spark-submit,spark/scala-2.12,spark/scala-2.13 -am -Phadoop3 ${MAVEN_ARGS}
-      - name: Setup conda environment with python ${{ matrix.python }} and R
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: python_3_with_R
-          environment-file: testing/env_python_${{ matrix.python }}_with_R.yml
-          python-version: ${{ matrix.python }}
-          miniforge-variant: Mambaforge
-          channels: conda-forge,defaults
-          channel-priority: true
-          auto-activate-base: false
-          use-mamba: true
       - name: Make IRkernel available to Jupyter
         run: |
           R -e "IRkernel::installspec()"
