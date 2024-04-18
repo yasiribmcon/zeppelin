@@ -169,17 +169,6 @@ jobs:
           key: ${{ runner.os }}-zeppelin-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-zeppelin-
-      - name: Setup conda environment with python ${{ matrix.python }} and R
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: python_3_with_R
-          environment-file: testing/env_python_${{ matrix.python }}_with_R.yml
-          python-version: ${{ matrix.python }}
-          miniforge-variant: Mambaforge
-          channels: conda-forge,defaults
-          channel-priority: true
-          auto-activate-base: false
-          use-mamba: true
       - name: Make IRkernel available to Jupyter
         run: |
           R -e "IRkernel::installspec()"
